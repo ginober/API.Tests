@@ -3,6 +3,8 @@ using SolidToken.SpecFlow.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NUnit.Framework;
 using Microsoft.Extensions.Configuration;
+using API.Tests.Utilities;
+using API.Tests;
 
 public static class TestDependencies
 {
@@ -18,8 +20,11 @@ public static class TestDependencies
                     hostBuilderContext = ctx;
 
                     var env = TestContext.Parameters["environment"];
-                    //cfg.AddInMemoryCollection(TestContext.Parameters);
-                    
+                        cfg.AddInMemoryCollection(TestContext.Parameters.ToKeyValuePairs())
+                            .AddJsonFile("GlobalSettings\\globalsettings.json",false)
+                            .AddJsonFile($"GlobalSettings\\globalsettings.{env}.json",true)
+                            .AddJsonFile($"appsettings.json",false);
+                            
                 });
 
         hostbuilder.Build();
@@ -31,6 +36,7 @@ public static class TestDependencies
     private static void ConfigureServices(ServiceCollection services, HostBuilderContext hostBuilderContext)
     {
         services
-            .AddSingleton(hostBuilderContext.Configuration);
+            .AddSingleton(hostBuilderContext.Configuration)
+            .AddApi();
     }
 }

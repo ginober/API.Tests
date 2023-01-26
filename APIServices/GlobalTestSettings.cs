@@ -11,7 +11,7 @@ namespace APIServices
     {
         public GlobalTestSettings(IConfiguration cfg)
         {
-
+            var settings = cfg.GetSection("globalSettings");
         }
     }
 }
