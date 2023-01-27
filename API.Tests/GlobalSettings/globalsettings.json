@@ -1,3 +1,5 @@
 {
-
+  "globatlTestSettings": {
+    "reqResURL": "https://reqres.in"
+  }
 }
